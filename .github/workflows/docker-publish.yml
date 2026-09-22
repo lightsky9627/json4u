@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: qiankong/json4u   # 换成你自己的 dockerhub 用户名/镜像名
+  IMAGE_NAME: qiankong/json4u
 
 jobs:
   build-and-push:
@@ -17,6 +17,17 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+      - name: Patch unsafe CDN (bootcdn -> cdnjs)
+        run: |
+          files=$(grep -rIl "bootcdn.net" --exclude-dir=.git . || true)
+          if [ -n "$files" ]; then
+            echo "Patching bootcdn.net references in:"
+            echo "$files"
+            echo "$files" | xargs sed -i 's/cdn\.bootcdn\.net/cdnjs.cloudflare.com/g'
+          else
+            echo "No bootcdn.net references found, nothing to patch."
+          fi
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
