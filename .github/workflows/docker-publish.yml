@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  IMAGE_NAME: lightsky9627/json4u   # 换成你自己的 dockerhub 用户名/镜像名
+  IMAGE_NAME: qiankong/json4u   # 换成你自己的 dockerhub 用户名/镜像名
 
 jobs:
   build-and-push:
